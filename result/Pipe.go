@@ -1,10 +1,10 @@
 package result
 
-func Pipe[T1 any, T2 any](value Result[T1], fn func(T1) Result[T2]) (result Result[T2]) {
+func Pipe[V any, R any](value Result[V], fn func(V) Result[R]) (result Result[R]) {
 	value.withError(func(err error) {
-		result = Error[T2]{Error: err}
+		result = Error[R]{Error: err}
 	})
-	value.withValue(func(v T1) {
+	value.withValue(func(v V) {
 		result = fn(v)
 	})
 	return
