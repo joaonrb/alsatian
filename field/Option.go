@@ -1,6 +1,7 @@
 package field
 
+import . "github.com/joaonrb/alsatian/result"
+
 type Option[T any] interface {
-	validatable[T]
-	integrate(Option[T])
+	validate(result Result[T]) Result[T]
 }
