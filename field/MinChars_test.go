@@ -9,14 +9,13 @@ import (
 
 func TestStringFieldMinCharShouldReturnOkStringWhenValueHasAtLeastMinChars(t *testing.T) {
 	field := String(MinChars(10))
-	result := field.Validate("Joao Nuno Ramalho Baptista")
-	require.IsType(t, OK[string]{}, result)
-	value := result.(OK[string]).Value
-	require.Equal(t, "Joao Nuno Ramalho Baptista", value)
+	result := field.Validate(longString)
+	require.Equal(t, OK[string]{Value: longString}, result)
 }
 
 func TestStringFieldMinCharShouldReturnErrorStringWhenValueHasLessThanMinChars(t *testing.T) {
 	field := String(MinChars(10))
-	result := field.Validate("Joao")
-	require.IsType(t, Error[string]{}, result)
+	result := field.Validate(shortString)
+	require.Error(t, Error[string]{Err: MinCharsNotReached(10, shortString)}, result)
+
 }

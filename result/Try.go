@@ -10,7 +10,7 @@ func Try[V any, R any](fn func(value V) Result[R]) func(V) Result[R] {
 			exception := recover()
 			if exception != nil {
 				result = Error[R]{
-					Error: goerrors.New(exception),
+					Err: goerrors.New(exception),
 				}
 			}
 		}()

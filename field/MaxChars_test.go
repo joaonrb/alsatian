@@ -9,14 +9,13 @@ import (
 
 func TestStringFieldMaxCharShouldReturnOkStringWhenValueHasLessThanMaxChars(t *testing.T) {
 	field := String(MaxChars(10))
-	result := field.Validate("Joao")
-	require.IsType(t, OK[string]{}, result)
-	value := result.(OK[string]).Value
-	require.Equal(t, "Joao", value)
+	result := field.Validate(shortString)
+	require.Equal(t, OK[string]{Value: shortString}, result)
 }
 
 func TestStringFieldMaxCharShouldReturnErrorStringWhenValueHasMoreThanMaxChars(t *testing.T) {
 	field := String(MaxChars(10))
-	result := field.Validate("Joao Nuno Ramalho Baptista")
-	require.IsType(t, Error[string]{}, result)
+	result := field.Validate(longString)
+	require.Error(t, Error[string]{Err: MaxCharsReached(10, longString)}, result)
+
 }

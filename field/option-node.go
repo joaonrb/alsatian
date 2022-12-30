@@ -5,9 +5,13 @@ import (
 	. "github.com/joaonrb/alsatian/result"
 )
 
+type validatable[T any] interface {
+	validate(result Result[T]) Result[T]
+}
+
 type node[T any] struct {
 	next   Option[T]
-	option Option[T]
+	option validatable[T]
 }
 
 func (n *node[T]) validate(result Result[T]) Result[T] {

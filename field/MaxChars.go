@@ -15,12 +15,10 @@ type maxChars struct {
 	max uint64
 }
 
-func (option *maxChars) integrate(Option[string]) {}
-
 func (option *maxChars) validate(result Result[string]) Result[string] {
 	return Pipe(result, func(value string) Result[string] {
 		if len(value) > int(option.max) {
-			return Error[string]{Error: MaxCharsReached(option.max, value)}
+			return Error[string]{Err: MaxCharsReached(option.max, value)}
 		}
 		return result
 	})

@@ -9,7 +9,7 @@ import (
 func convert[T constraints.Integer](value string) Result[T] {
 	n, err := strconv.ParseInt(value, 10, 32)
 	if err != nil {
-		return Error[T]{Error: err}
+		return Error[T]{Err: err}
 	}
 	return OK[T]{Value: T(n)}
 }

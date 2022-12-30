@@ -20,7 +20,7 @@ func TestPipeOkWithInvalidFunctionShouldReturnErrorResult(t *testing.T) {
 }
 
 func TestPipeErrorWithCorrectFunctionShouldReturnErrorResult(t *testing.T) {
-	var err Result[string] = Error[string]{Error: errors.New("something dark side")}
+	var err Result[string] = Error[string]{Err: errors.New("something dark side")}
 	result := Pipe(err, convert[int])
-	require.Equal(t, Error[int]{Error: err.(Error[string]).Error}, result)
+	require.Equal(t, Error[int]{Err: err.(Error[string]).Err}, result)
 }
