@@ -6,9 +6,7 @@ import (
 )
 
 func MaxChars(max uint64) Option[string] {
-	return &node[string]{
-		option: &maxChars{max: max},
-	}
+	return &maxChars{max: max}
 }
 
 type maxChars struct {

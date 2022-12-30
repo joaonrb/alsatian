@@ -6,9 +6,7 @@ import (
 )
 
 func MinChars(Min uint64) Option[string] {
-	return &node[string]{
-		option: &minChars{min: Min},
-	}
+	return &minChars{min: Min}
 }
 
 type minChars struct {

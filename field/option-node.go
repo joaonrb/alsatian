@@ -19,7 +19,7 @@ func (n *node[T]) String() string {
 }
 
 func aggregate[T any](options ...Option[T]) Option[T] {
-	head := &node[T]{option: &last[T]{}}
+	var head Option[T] = &last[T]{}
 	current := head
 	for i := range options {
 		current = &node[T]{next: options[len(options)-(i+1)], option: current}
