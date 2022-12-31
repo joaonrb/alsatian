@@ -3,6 +3,7 @@ package field
 import (
 	"fmt"
 	"github.com/go-errors/errors"
+	"golang.org/x/exp/constraints"
 )
 
 type inner interface {
@@ -53,4 +54,26 @@ func (err MinCharsNotReachedError) Min() uint64 {
 
 func (err MinCharsNotReachedError) Value() string {
 	return err.value
+}
+
+func ValueHigherThan[N constraints.Signed | constraints.Float](value N, limit N) ValueHigherThanError[N] {
+	return ValueHigherThanError[N]{
+		inner: errors.Wrap(fmt.Errorf("value %v is bigger than %v", value, limit), 1),
+		value: value,
+		limit: limit,
+	}
+}
+
+type ValueHigherThanError[N constraints.Signed | constraints.Float] struct {
+	inner
+	value N
+	limit N
+}
+
+func (err ValueHigherThanError[N]) Value() N {
+	return err.value
+}
+
+func (err ValueHigherThanError[N]) Limit() N {
+	return err.limit
 }
