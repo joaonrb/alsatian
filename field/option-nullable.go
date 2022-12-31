@@ -1,17 +1,22 @@
 package field
 
-//import . "github.com/joaonrb/alsatian/result"
-//
-//type nullable[T any] struct {
-//	Option[T]
-//}
-//
-//func (option *nullable[T]) validate(result Result[T]) Result[T] {
-//	Pipe(result, func(v T) Result[T] {
-//
-//	})
-//}
-//
-//func (option *nullable[T]) integrate(o Option[T]) {
-//	option.Option.integrate(o.(*nullable[T]).Option)
-//}
+import . "github.com/joaonrb/alsatian/result"
+
+type pointer[T any] interface {
+	*T
+}
+
+type nullable[P pointer[T], T any] struct {
+	Option[T]
+}
+
+func (option *nullable[P, T]) validate(result Result[P]) Result[P] {
+	return Pipe(result, func(p P) Result[P] {
+		if p == nil {
+			return OK[P]{Value: p}
+		}
+		return Pipe(option.Option.validate(OK[T]{Value: *p}), func(t T) Result[P] {
+			return OK[P]{Value: &t}
+		})
+	})
+}
