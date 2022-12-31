@@ -24,12 +24,18 @@ func TestMaybeStringFieldMaxAndMinCharShouldReturnErrorStringWhenValueHasLessTha
 	str := shortString
 	field := MaybeString(MinChars(10), MaxChars(15))
 	result := field.Validate(&str)
-	require.Error(t, Error[string]{Err: MinCharsNotReached(10, str)}, result)
+	require.IsType(t, Error[*string]{}, result)
+	require.IsType(t, MinCharsNotReachedError{}, result.(Error[*string]).Err)
+	require.Equal(t, uint64(10), result.(Error[*string]).Err.(MinCharsNotReachedError).Min())
+	require.Equal(t, shortString, result.(Error[*string]).Err.(MinCharsNotReachedError).Value())
 }
 
 func TestMaybeStringFieldMaxAndMinCharShouldReturnErrorStringWhenValueHasMoreThanMaxChars(t *testing.T) {
 	str := longString
 	field := MaybeString(MinChars(10), MaxChars(15))
 	result := field.Validate(&str)
-	require.Error(t, Error[string]{Err: MaxCharsReached(10, str)}, result)
+	require.IsType(t, Error[*string]{}, result)
+	require.IsType(t, MaxCharsReachedError{}, result.(Error[*string]).Err)
+	require.Equal(t, uint64(15), result.(Error[*string]).Err.(MaxCharsReachedError).Max())
+	require.Equal(t, longString, result.(Error[*string]).Err.(MaxCharsReachedError).Value())
 }

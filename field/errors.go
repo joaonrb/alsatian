@@ -25,6 +25,14 @@ type MaxCharsReachedError struct {
 	max   uint64
 }
 
+func (err MaxCharsReachedError) Max() uint64 {
+	return err.max
+}
+
+func (err MaxCharsReachedError) Value() string {
+	return err.value
+}
+
 func MinCharsNotReached(min uint64, value string) MinCharsNotReachedError {
 	return MinCharsNotReachedError{
 		inner: errors.Wrap(fmt.Errorf("min of %d chars not reached for value '%s'", min, value), 1),
@@ -37,4 +45,12 @@ type MinCharsNotReachedError struct {
 	inner
 	value string
 	min   uint64
+}
+
+func (err MinCharsNotReachedError) Min() uint64 {
+	return err.min
+}
+
+func (err MinCharsNotReachedError) Value() string {
+	return err.value
 }
