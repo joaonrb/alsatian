@@ -7,20 +7,20 @@ import (
 	"testing"
 )
 
-func TestPipeOkWithCorrectFunctionShouldReturnCorrectResult(t *testing.T) {
+func TestIfOkWithCorrectFunctionShouldReturnCorrectResult(t *testing.T) {
 	var ok Result[string] = OK[string]{Value: "1"}
-	result := Pipe(ok, convert[int])
+	result := IfOK(ok, convert[int])
 	require.Equal(t, OK[int]{Value: 1}, result)
 }
 
-func TestPipeOkWithInvalidFunctionShouldReturnErrorResult(t *testing.T) {
+func TestIfOkWithInvalidFunctionShouldReturnErrorResult(t *testing.T) {
 	var ok Result[string] = OK[string]{Value: "J"}
-	result := Pipe(ok, convert[int])
+	result := IfOK(ok, convert[int])
 	require.IsType(t, Error[int]{}, result)
 }
 
-func TestPipeErrorWithCorrectFunctionShouldReturnErrorResult(t *testing.T) {
+func TestIfErrorWithCorrectFunctionShouldReturnErrorResult(t *testing.T) {
 	var err Result[string] = Error[string]{Err: errors.New("something dark side")}
-	result := Pipe(err, convert[int])
+	result := IfOK(err, convert[int])
 	require.Equal(t, Error[int]{Err: err.(Error[string]).Err}, result)
 }

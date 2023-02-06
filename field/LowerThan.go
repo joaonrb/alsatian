@@ -15,7 +15,7 @@ type lowerThan[N constraints.Signed | constraints.Float] struct {
 }
 
 func (option *lowerThan[N]) validate(result Result[N]) Result[N] {
-	return Pipe(result, func(value N) Result[N] {
+	return IfOK(result, func(value N) Result[N] {
 		if value > option.limit {
 			return Error[N]{Err: ValueHigherThan(value, option.limit)}
 		}

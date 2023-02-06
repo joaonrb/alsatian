@@ -14,7 +14,7 @@ type minChars struct {
 }
 
 func (option *minChars) validate(result Result[string]) Result[string] {
-	return Pipe(result, func(value string) Result[string] {
+	return IfOK(result, func(value string) Result[string] {
 		if len(value) < int(option.min) {
 			return Error[string]{Err: MinCharsNotReached(option.min, value)}
 		}
