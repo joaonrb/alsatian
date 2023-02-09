@@ -13,10 +13,10 @@ func (err Error[T]) Error() string {
 	return err.Err.Error()
 }
 
-func (err Error[T]) IfOK(func(T)) {}
+func (err Error[T]) IfOK(func(T) Result[T]) Result[T] { return err }
 
-func (err Error[T]) IfError(fn func(error)) {
-	fn(err.Err)
+func (err Error[T]) IfError(fn func(error) Result[T]) Result[T] {
+	return fn(err.Err)
 }
 
 func (err Error[T]) String() string {
