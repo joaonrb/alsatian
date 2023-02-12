@@ -1,4 +1,4 @@
-package field
+package value
 
 import . "github.com/joaonrb/alsatian/result"
 

@@ -1,4 +1,4 @@
-package field
+package value
 
 import (
 	"fmt"
@@ -17,7 +17,7 @@ type lowerThan[N constraints.Signed | constraints.Float] struct {
 func (option *lowerThan[N]) validate(result Result[N]) Result[N] {
 	return IfOK(result, func(value N) Result[N] {
 		if value > option.limit {
-			return Error[N]{Err: ValueHigherThan(value, option.limit)}
+			return Error[N]{Err: HigherThan(value, option.limit)}
 		}
 		return result
 	})
