@@ -60,20 +60,38 @@ func (err MinNotReachedError) Min() uint64 {
 	return err.min
 }
 
-func HigherThan[N constraints.Signed | constraints.Float](value N, limit N) HigherThanError[N] {
+func ValueHigherThan[N constraints.Integer | constraints.Float](value N, limit N) HigherThanError[N] {
 	return HigherThanError[N]{
-		inner: errors.Wrap(fmt.Errorf("value %v is bigger than %v", value, limit), 1),
+		inner: errors.Wrap(fmt.Errorf("value %v is higher than %v", value, limit), 1),
 		base:  &base{value: value},
 		limit: limit,
 	}
 }
 
-type HigherThanError[N constraints.Signed | constraints.Float] struct {
+type HigherThanError[N constraints.Integer | constraints.Float] struct {
 	inner
 	*base
 	limit N
 }
 
 func (err HigherThanError[N]) Limit() N {
+	return err.limit
+}
+
+func ValueLowerThan[N constraints.Integer | constraints.Float](value N, limit N) LowerThanError[N] {
+	return LowerThanError[N]{
+		inner: errors.Wrap(fmt.Errorf("value %v is lower than %v", value, limit), 1),
+		base:  &base{value: value},
+		limit: limit,
+	}
+}
+
+type LowerThanError[N constraints.Integer | constraints.Float] struct {
+	inner
+	*base
+	limit N
+}
+
+func (err LowerThanError[N]) Limit() N {
 	return err.limit
 }
